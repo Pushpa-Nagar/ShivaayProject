@@ -1,0 +1,169 @@
+﻿
+----------------------*********ProductGroup************----------------------------
+
+CREATE TABLE ProductGroup (
+    ProductGroupID int IDENTITY(1,1) NOT NULL,
+    GroupDescription nvarchar(255) NOT NULL,
+    GroupCode nvarchar(100) NOT NULL UNIQUE,
+    Active bit NOT NULL,
+	CONSTRAINT PK_ProductGroup PRIMARY KEY (ProductGroupID)
+);
+
+-------------------------------*********************************---------------------------------
+
+
+CREATE TABLE Products (
+    ProductID int IDENTITY(1,1) NOT NULL,
+	ProductGroupID int NOT NULL,
+    ProductDescription nvarchar(255) NOT NULL,
+    ProductNumber nvarchar(100) NOT NULL UNIQUE,
+	Price Decimal(18,0) NOT NULL,
+    Active bit NOT NULL,
+	CONSTRAINT PK_Products PRIMARY KEY (ProductID),
+	CONSTRAINT FK_ProductGroup FOREIGN KEY (ProductGroupID)
+    REFERENCES ProductGroup(ProductGroupID)
+);
+
+-------------------------------*********************************---------------------------------
+
+CREATE TABLE Agreements (
+    AgreementID int IDENTITY(1,1) NOT NULL,
+	UserID nvarchar(450) NOT NULL,
+	ProductGroupID int NOT NULL,
+	ProductID int NOT NULL,
+    EffectiveDate Datetime NOT NULL,
+    ExpirationDate Datetime NOT NULL,
+	ProductPrice Decimal(18,0) NOT NULL,
+    NewPrice Decimal(18,0) NOT NULL,
+	CONSTRAINT PK_Agreements PRIMARY KEY (AgreementID),
+	CONSTRAINT FK_AgreementProductGroup FOREIGN KEY (ProductGroupID)
+    REFERENCES ProductGroup(ProductGroupID),
+	CONSTRAINT FK_AgreementProducts FOREIGN KEY (ProductID)
+    REFERENCES Products(ProductID)
+);
+
+
+-------------------------------*********************************---------------------------------
+
+INSERT INTO [dbo].[ProductGroup]
+           ([GroupDescription]
+           ,[GroupCode]
+           ,[Active])
+     VALUES
+           ('ProductGroup1' ,'A111',1)
+
+GO
+
+
+		   INSERT INTO [dbo].[ProductGroup]
+           ([GroupDescription]
+           ,[GroupCode]
+           ,[Active])
+     VALUES
+           ('ProductGroup1','B111' ,1)
+GO
+
+
+INSERT INTO [dbo].[ProductGroup]
+           ([GroupDescription]
+           ,[GroupCode]
+           ,[Active])
+     VALUES
+           ('ProductGroup3' ,'C111',0)
+
+GO
+
+
+		   INSERT INTO [dbo].[ProductGroup]
+           ([GroupDescription]
+           ,[GroupCode]
+           ,[Active])
+     VALUES
+           ('ProductGroup4','D111' ,1)
+GO
+
+-------------------------------*********************************---------------------------------
+
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (1, 'Product1A', 'A001', 100.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (1, 'Product1B', 'B001', 150.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (2, 'Product2A', 'A002', 100.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (2, 'Product2B', 'B002', 150.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (3, 'Product3A', 'A003', 100.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (3, 'Product3B', 'B003', 150.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (4, 'Product4A', 'A004', 100.00 ,1)
+GO
+
+INSERT INTO [dbo].[Products]
+           ([ProductGroupID]
+           ,[ProductDescription]
+           ,[ProductNumber]
+           ,[Price]
+           ,[Active])
+     VALUES
+           (4, 'Product4B', 'B004', 150.00 ,0)
+GO
+
+
+--------------------------------------------******************************-------------------------------
