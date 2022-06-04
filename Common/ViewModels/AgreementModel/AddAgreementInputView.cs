@@ -5,10 +5,10 @@ namespace Common.ViewModels.AgreementModel
 {
     public class AddAgreementInputView
     {
-        [Required]
+        [Required(ErrorMessage = "Product Group is Required")]
         public int ProductGroupId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Product is Required")]
         public int ProductId { get; set; }
 
         [Required(ErrorMessage = "EffectiveDate is Required")]
@@ -20,9 +20,11 @@ namespace Common.ViewModels.AgreementModel
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ExpirationDate { get; set; }
-        [Required]
-        public decimal ProductPrice { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "New Price is Required")]
         public decimal NewPrice { get; set; }
+        public bool Active { get; set; }
+        public string UserName { get; set; }
+        public string UserId { get; set; }
     }
 }
