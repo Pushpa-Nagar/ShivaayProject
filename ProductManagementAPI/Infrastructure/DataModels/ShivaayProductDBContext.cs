@@ -24,7 +24,7 @@ namespace ProductManagementAPI.Infrastructure.DataModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=172.29.19.137;Database=ShivaayProductDB;TrustServerCertificate=True;user id = Sofyx; password = 4zMD78xl;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=ShivaayProductDB;TrustServerCertificate=True;user id = user; password = pass;");
             }
         }
 
