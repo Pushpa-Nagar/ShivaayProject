@@ -21,18 +21,11 @@ namespace Web.HttpAggregator.Controllers
             try
             {
                 var controllerName = base.ControllerContext.ActionDescriptor.ControllerName;
-                //if (Startup.Configuration.GetValue<bool>("AppSettings:IsAuditLoggingEnabled"))
-                //{
                 StartDate = DateTime.UtcNow;
                 var result = action().GetAwaiter().GetResult();
                 EndDate = DateTime.UtcNow;
                 AuditLogging(StartDate, EndDate, true, moduleId);
                 return result;
-                //}
-                //else
-                //{
-                //    return await action();
-                //}
             }
             catch (Exception ex)
             {
