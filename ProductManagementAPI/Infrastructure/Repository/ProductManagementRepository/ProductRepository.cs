@@ -24,5 +24,20 @@ namespace ProductManagementAPI.Infrastructure.Repository.ProductManagementReposi
                 throw;
             }
         }
+
+        public Task<Products> GetProductDetailById(int productId)
+        {
+            Products productResult = new Products();
+            try
+            {
+                var productDetails = base.Single(x => x.ProductId == productId && x.Active == true);
+                productResult = productDetails;
+                return Task.FromResult(productResult);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

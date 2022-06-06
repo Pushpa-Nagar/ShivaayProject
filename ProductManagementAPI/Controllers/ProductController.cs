@@ -125,40 +125,40 @@ namespace ProductManagementAPI.Controllers
 
         #endregion
 
-        //#region Content Details Get API
+        #region Agreement Details Get API
 
-        //[Route("GetContentDetailsById")]
-        //[HttpPost]
-        ///// <summary>
-        ///// Get ContentDetails By Id
-        ///// </summary>
-        ///// <param name="contentId"></param>
-        ///// <returns></returns>
-        //public async Task<IActionResult> GetContentDetailsById([FromBody] RecordContentView<ContentDetailInputView> recordContentView)
-        //{
-        //    return await Execute(async () =>
-        //    {
-        //        var contentData = await _contentServices.GetContentDetailsById(recordContentView.Records.ContentId, recordContentView.Records.ContentTypeId, recordContentView.Records.BlockedMemberIds, recordContentView.MemberId, Convert.ToInt64(recordContentView.ContentOwnerId));
-        //        return Ok(contentData);
-        //    });
-        //}
+        [Route("GetAgreementDetailsById")]
+        [HttpGet]
+        /// <summary>
+        /// Get Agreement Details By Id
+        /// </summary>
+        /// <param name="agreementId"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetAgreementDetailsById([FromQuery] int agreementId)
+        {
+            return await Execute(async () =>
+            {
+                var agreementData = await _productServices.GetAgreementDetailsById(agreementId);
+                return Ok(agreementData);
+            });
+        }
 
-        //[Route("GetAllContents")]
-        //[HttpPost]
-        ///// <summary>
-        /////  Get all Contents
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<IActionResult> GetAllContents([FromBody] RecordContentView<ContentFilterView> contentFilterView)
-        //{
-        //    return await Execute(async () =>
-        //    {
-        //        var result = await _contentServices.GetAllContents(contentFilterView);
-        //        return Ok(result);
-        //    });
-        //}
+        [Route("GetAllAgreementList")]
+        [HttpPost]
+        /// <summary>
+        ///  Get all Agreements
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetAllAgreementList([FromBody] RecordContentView<AgreementFilterInputView> recordContentView)
+        {
+            return await Execute(async () =>
+            {
+                var allAgreementData = await _productServices.GetAllAgreementList(recordContentView);
+                return Ok(allAgreementData);
+            });
+        }
 
-        //#endregion
+        #endregion
 
     }
 }

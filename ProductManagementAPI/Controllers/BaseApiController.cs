@@ -1,7 +1,6 @@
 ﻿using Common.CommonEnum;
 using Common.ViewModels.AuditLogModel;
 using Common.ViewModels.ResponseModel;
-using LoggerSystem;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

@@ -24,7 +24,7 @@ namespace ProductManagementAPI.Infrastructure.DataModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=172.29.19.137;Database=ShivaayProductDB;TrustServerCertificate=True; user id = Sofyx; password = 4zMD78xl;");
+                optionsBuilder.UseSqlServer("Server=172.29.19.137;Database=ShivaayProductDB;TrustServerCertificate=True;user id = Sofyx; password = 4zMD78xl;");
             }
         }
 
@@ -53,6 +53,10 @@ namespace ProductManagementAPI.Infrastructure.DataModels
                     .HasColumnName("UserID")
                     .HasMaxLength(450);
 
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
                 entity.HasOne(d => d.ProductGroup)
                     .WithMany(p => p.Agreements)
                     .HasForeignKey(d => d.ProductGroupId)
@@ -69,7 +73,7 @@ namespace ProductManagementAPI.Infrastructure.DataModels
             modelBuilder.Entity<ProductGroup>(entity =>
             {
                 entity.HasIndex(e => e.GroupCode)
-                    .HasName("UQ__ProductG__3B97438094747C0A")
+                    .HasName("UQ__ProductG__3B974380F675B289")
                     .IsUnique();
 
                 entity.Property(e => e.ProductGroupId).HasColumnName("ProductGroupID");
@@ -88,7 +92,7 @@ namespace ProductManagementAPI.Infrastructure.DataModels
                 entity.HasKey(e => e.ProductId);
 
                 entity.HasIndex(e => e.ProductNumber)
-                    .HasName("UQ__Products__49A3C8397931C7DC")
+                    .HasName("UQ__Products__49A3C839E4573C62")
                     .IsUnique();
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");

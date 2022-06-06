@@ -1,0 +1,69 @@
+﻿@model Common.ViewModels.AgreementModel.AgreementDetailResponseView
+
+<script src="~/js/editAgreement.js"></script>
+
+<form>
+    <div class="modal fade" id="AddUpdateModelPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="AddUpdateModelLabel">Edit Agreement</h5>
+                    <button type="reset" class="close text-white" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(m => m.AgreementId, new { @id = "agreementId" })
+                        @Html.HiddenFor(m => m.ProductGroupId, new { @id = "productGroupId" })
+                        @Html.HiddenFor(m => m.ProductId, new { @id = "productId" })
+                        @Html.HiddenFor(m => m.EffectiveDate, new { @id = "dateEffective" })
+                        @Html.HiddenFor(m => m.ExpirationDate, new { @id = "dateExpiration" })
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label>Product Group <span class="text-danger"> *</span></label>
+                                <select name="ProductGroupId" class="form-control" id="ddlProductGroup" required asp-for="ProductGroupId">
+                                    <option value="">Select Product Group</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Product<span class="text-danger"> *</span></label>
+                                <select name="ProductId" class="form-control" id="ddlProduct" required asp-for="ProductId">
+                                    <option value="">Select Product</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Effective Date<span class="text-danger"> *</span></label>
+                                <input type="date" class="form-control" id="txtEffectiveDate" required asp-for="EffectiveDate" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Expiration Date<span class="text-danger"> *</span></label>
+                                <input type="date" class="form-control" id="txtExpirationDate" required asp-for="ExpirationDate" data-error="Date is required" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>New Price<span class="text-danger"> *</span></label>
+                                <input type="number" class="form-control" id="txtNewPrice" required placeholder="Enter New Price" asp-for="NewPrice" />
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="activeCheck" asp-for="Active">
+                                <label class="form-check-label">Active</label>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnEdit" onclick="return UpdateAgreement();">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

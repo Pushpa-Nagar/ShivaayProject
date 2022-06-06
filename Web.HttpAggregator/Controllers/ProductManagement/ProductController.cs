@@ -125,40 +125,40 @@ namespace Web.HttpAggregator.Controllers.ProductManagement
 
         #endregion
 
-        //#region Agreement Details Get API
+        #region Agreement Details Get API
 
-        //[Route("GetAgreementDetailsById")]
-        //[HttpGet]
-        ///// <summary>
-        ///// Get Agreement Details By Id
-        ///// </summary>
-        ///// <param name="agreementId"></param>
-        ///// <returns></returns>
-        //public async Task<IActionResult> GetAgreementDetailsById([FromQuery] int agreementId)
-        //{
-        //    return await Execute(async () =>
-        //    {
-        //        var agreementData = await _productManagementService.GetAgreementDetailsById(agreementId);
-        //        return Ok(agreementData);
-        //    });
-        //}
+        [Route("GetAgreementDetailsById")]
+        [HttpGet]
+        /// <summary>
+        /// Get Agreement Details By Id
+        /// </summary>
+        /// <param name="agreementId"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetAgreementDetailsById([FromQuery] int agreementId)
+        {
+            return await Execute(async () =>
+            {
+                var agreementData = await _productManagementService.GetAgreementDetailsById(agreementId);
+                return Ok(agreementData);
+            });
+        }
 
-        //[Route("GetAllAgreementList")]
-        //[HttpPost]
-        ///// <summary>
-        /////  Get all Agreements
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<IActionResult> GetAllAgreementList([FromBody] RecordInputView<AgreementFilterInputView> recordInputView)
-        //{
-        //    return await Execute(async () =>
-        //    {
-        //        var allAgreementData = await _productManagementService.GetAllAgreementList(recordInputView);
-        //        return Ok(allAgreementData);
-        //    });
-        //}
+        [Route("GetAllAgreementList")]
+        [HttpPost]
+        /// <summary>
+        ///  Get all Agreements
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetAllAgreementList([FromBody] RecordInputView<AgreementFilterInputView> recordInputView)
+        {
+            return await Execute(async () =>
+            {
+                var allAgreementData = await _productManagementService.GetAllAgreementList(recordInputView);
+                return Ok(allAgreementData);
+            });
+        }
 
-        //#endregion
+        #endregion
 
     }
 }

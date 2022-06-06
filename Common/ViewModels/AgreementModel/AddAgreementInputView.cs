@@ -20,7 +20,7 @@ namespace Common.ViewModels.AgreementModel
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ExpirationDate { get; set; }
-        
+
         [Required(ErrorMessage = "New Price is Required")]
         public decimal NewPrice { get; set; }
         public bool Active { get; set; }

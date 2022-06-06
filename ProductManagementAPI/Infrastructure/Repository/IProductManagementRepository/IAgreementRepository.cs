@@ -1,4 +1,6 @@
-﻿using ProductManagementAPI.Infrastructure.DataModels;
+﻿using Common.ViewModels.AgreementModel;
+using Common.ViewModels.ResponseModel;
+using ProductManagementAPI.Infrastructure.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +14,7 @@ namespace ProductManagementAPI.Infrastructure.Repository.IProductManagementRepos
         Task<bool> UpdateAgreementDetails(Agreements agreementDetails);
         Task<bool> DeleteAgreementDetails(Agreements agreementDetails);
         Task<Agreements> GetAgreementDetailById(int agreementId);
+        Task<AgreementDetailResponseView> GetAgreementDetails(int agreementId);
+        Task<RecordsListResponseView<AgreementListView>> GetAgreementList(AgreementFilterInputView agreementFilterInputView);
     }
 }

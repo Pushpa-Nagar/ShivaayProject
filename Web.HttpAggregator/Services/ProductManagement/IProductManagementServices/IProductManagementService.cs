@@ -12,16 +12,16 @@ namespace Web.HttpAggregator.Services.ProductManagement.IProductManagementServic
         Task<RecordsListResponseView<SelectionRecordView>> GetAllProductByGroupId(int productGroupId);
         #endregion
 
-        #region Content Crud Operations
+        #region Agreement Crud Operations
         Task<BaseResponseView> SaveAgreement(RecordInputView<AddAgreementInputView> recordInputView);
         Task<BaseResponseView> EditAgreement(RecordInputView<EditAgreementInputView> recordInputView);
         Task<BaseResponseView> DeleteAgreement(int agreementId);
 
         #endregion
 
-        #region Content Details Get API
-        //Task<ContentDetailsWebResponseView> GetAgreementDetailsById(int agreementId);
-       // Task<RecordsListResponseView<ContentListWebView>> GetAllAgreementList(RecordInputView<AgreementFilterInputView> recordInputView);
+        #region Agreement Details Get API
+        Task<AgreementDetailResponseView> GetAgreementDetailsById(int agreementId);
+        Task<RecordsListResponseView<AgreementListView>> GetAllAgreementList(RecordInputView<AgreementFilterInputView> recordInputView);
 
         #endregion
 

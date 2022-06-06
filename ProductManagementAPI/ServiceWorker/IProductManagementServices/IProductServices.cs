@@ -20,5 +20,10 @@ namespace ProductManagementAPI.ServiceWorker.IProductManagementServices
         Task<BaseResponseView> DeleteAgreement(int agreementId);
 
         #endregion
+
+        #region
+        Task<AgreementDetailResponseView> GetAgreementDetailsById(int agreementId);
+        Task<RecordsListResponseView<AgreementListView>> GetAllAgreementList(RecordContentView<AgreementFilterInputView> recordContentView);
+        #endregion
     }
 }

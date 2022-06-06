@@ -118,16 +118,18 @@ namespace ProductManagementAPI.ServiceWorker.ProductManagementServices
             Agreements agreementDetails = null;
             try
             {
+                var productData = await _productRepository.GetProductDetailById(recordContentView.Records.ProductId);
+
                 agreementDetails = new Agreements();
                 agreementDetails.ProductGroupId = recordContentView.Records.ProductGroupId;
                 agreementDetails.ProductId = recordContentView.Records.ProductId;
-                agreementDetails.UserId = "1";
                 agreementDetails.EffectiveDate = recordContentView.Records.EffectiveDate;
                 agreementDetails.ExpirationDate = recordContentView.Records.ExpirationDate;
-                agreementDetails.ExpirationDate = recordContentView.Records.ExpirationDate;
-                agreementDetails.ProductPrice = recordContentView.Records.ProductPrice;
+                agreementDetails.ProductPrice = productData != null ? productData.Price : 0;
                 agreementDetails.NewPrice = recordContentView.Records.NewPrice;
-                //agreementDetails.CreatedDate = DateTime.UtcNow;
+                agreementDetails.UserId = recordContentView.Records.UserId;
+                agreementDetails.UserName = recordContentView.Records.UserName;
+                agreementDetails.Active = recordContentView.Records.Active;
 
                 await _agreementRepository.SaveAgreementDetails(agreementDetails);
                 _unitOfWork.Commit();
@@ -156,12 +158,15 @@ namespace ProductManagementAPI.ServiceWorker.ProductManagementServices
                 var agreementDetails = await _agreementRepository.GetAgreementDetailById(recordContentView.Records.AgreementId);
                 if (agreementDetails != null)
                 {
+                    var productData = await _productRepository.GetProductDetailById(recordContentView.Records.ProductId);
+
+                    agreementDetails.ProductGroupId = recordContentView.Records.ProductGroupId;
                     agreementDetails.ProductId = recordContentView.Records.ProductId;
                     agreementDetails.EffectiveDate = recordContentView.Records.EffectiveDate;
                     agreementDetails.ExpirationDate = recordContentView.Records.ExpirationDate;
-                    agreementDetails.ExpirationDate = recordContentView.Records.ExpirationDate;
-                    agreementDetails.ProductPrice = recordContentView.Records.ProductPrice;
+                    agreementDetails.ProductPrice = productData != null ? productData.Price : 0;
                     agreementDetails.NewPrice = recordContentView.Records.NewPrice;
+                    agreementDetails.Active = recordContentView.Records.Active;
 
                     await _agreementRepository.UpdateAgreementDetails(agreementDetails);
                     _unitOfWork.Commit();
@@ -220,149 +225,62 @@ namespace ProductManagementAPI.ServiceWorker.ProductManagementServices
 
         #endregion
 
-        //#region Content Details Get API
+        #region Agreement Details Get API
 
-        ///// <summary>
-        ///// Get Content Details By ID
-        ///// </summary>
-        ///// <param name="contentId"></param>
-        ///// <returns></returns>
-        //public async Task<ContentDetailView> GetContentDetailsById(long contentId, long contentTypeId, List<long> blockedMemberIds, long memberId, long contentOwnerId)
-        //{
-        //    ContentDetailView contentData = new ContentDetailView();
-        //    Contents content = new Contents();
-        //    try
-        //    {
-        //        var contentDetail = await _contentDetailRepository.GetContentDetailByContentTypeId(contentId, contentTypeId);
-        //        if (contentDetail != null)
-        //        {
-        //            if (!blockedMemberIds.Contains(contentDetail.ContentOwnerId))
-        //            {
-        //                await SaveContentViews(contentId, contentOwnerId);
-        //                content = await _contentDetailRepository.GetContentDetailsById(contentId);
-        //                if (content != null)
-        //                {
-        //                    contentData.ContentId = content.ContentId;
-        //                    contentData.Title = content.Title;
-        //                    contentData.Description = content.Description;
-        //                    contentData.IncidentDate = content.IncidentDate;
-        //                    contentData.EraIncidentDate = content.EraIncidentDate;
-        //                    contentData.TotalViews = content.TotalViews;
-        //                    contentData.TotalLikes = content.TotalLikes;
-        //                    contentData.TotalComments = content.TotalComments;
-        //                    contentData.TotalShares = content.TotalShares;
-        //                    contentData.IsLiked = content.Likes != null && content.Likes.Where(x => x.CreatedBy == contentOwnerId).Count() == 1 ? true : false;
-        //                    contentData.IsShared = content.Shares != null && content.Shares.Where(x => x.CreatedBy == contentOwnerId).Count() == 1 ? true : false;
-        //                    contentData.CreatedBy = content.CreatedBy;
-        //                    contentData.CreatedDate = content.CreatedDate;
-        //                    contentData.ContentOwnerId = content.ContentOwnerId;
+        /// <summary>
+        /// Get Agreement Details By ID
+        /// </summary>
+        /// <param name="agreementId"></param>
+        /// <returns></returns>
+        public async Task<AgreementDetailResponseView> GetAgreementDetailsById(int agreementId)
+        {
+            AgreementDetailResponseView productAgreementData = new AgreementDetailResponseView();
+            try
+            {
+                var agreementDetails = await _agreementRepository.GetAgreementDetailById(agreementId);
+                if (agreementDetails != null)
+                {
+                    productAgreementData = await _agreementRepository.GetAgreementDetails(agreementId);
+                    productAgreementData.Message = "Success";
+                    productAgreementData.Type = _appSettings.IsSuccessType;
+                    productAgreementData.Code = Convert.ToInt32(ResponseCodeEnum.Success);
+                }
+                else
+                {
+                    productAgreementData.Message = "Content Not Found.";
+                    productAgreementData.Type = _appSettings.IsErrorType;
+                    productAgreementData.Code = Convert.ToInt32(ResponseCodeEnum.ContentNotFound);
+                }
+                return productAgreementData;
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-        //                    if (content.ContentCategoryMapping != null && content.ContentCategoryMapping.Count > 0)
-        //                    {
-        //                        contentData.ContentCategoryIds = content.ContentCategoryMapping.Where(x => x.IsDeleted == false).Select(x => x.ContentCategoryId).ToList();
-        //                    }
+        /// <summary>
+        ///  Get all Agreements
+        /// </summary>
+        /// <returns></returns>
+        public async Task<RecordsListResponseView<AgreementListView>> GetAllAgreementList(RecordContentView<AgreementFilterInputView> recordContentView)
+        {
+            try
+            {
+                RecordsListResponseView<AgreementListView> lstAgreementDetails = new RecordsListResponseView<AgreementListView>();
+                lstAgreementDetails = await _agreementRepository.GetAgreementList(recordContentView.Records);
+                lstAgreementDetails.Message = "Success";
+                lstAgreementDetails.Type = _appSettings.IsSuccessType;
+                lstAgreementDetails.Code = Convert.ToInt32(ResponseCodeEnum.Success);
+                return lstAgreementDetails;
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-        //                    if (content.ContentTimePeriodMapping != null && content.ContentTimePeriodMapping.Count > 0)
-        //                    {
-        //                        contentData.TimePeriodIds = content.ContentTimePeriodMapping.Where(x => x.IsDeleted == false).Select(x => x.TimePeriodId).ToList();
-        //                    }
-
-        //                    if (content.Likes != null && content.Likes.Count > 0)
-        //                    {
-        //                        contentData.Likes = (from likes in content.Likes
-        //                                             where likes.IsDeleted == false && !blockedMemberIds.Contains(likes.CreatedBy)
-        //                                             select new LikesView()
-        //                                             {
-        //                                                 ContentLikeId = likes.LikeId,
-        //                                                 ContentId = likes.ContentId,
-        //                                                 CreatedBy = likes.CreatedBy,
-        //                                                 CreatedDate = likes.CreatedDate
-        //                                             }).OrderByDescending(x => x.CreatedDate).Take(Convert.ToInt32(_appSettings.DefaultCount)).ToList();
-        //                    }
-
-        //                    if (content.Comments != null && content.Comments.Count > 0)
-        //                    {
-        //                        contentData.Comments = (from comments in content.Comments
-        //                                                where comments.IsDeleted == false && !blockedMemberIds.Contains(comments.CreatedBy)
-        //                                                select new CommentsView
-        //                                                {
-        //                                                    CommentId = comments.CommentId,
-        //                                                    ContentId = comments.ContentId,
-        //                                                    Comment = comments.Comment,
-        //                                                    CreatedBy = comments.CreatedBy,
-        //                                                    CreatedDate = comments.CreatedDate
-        //                                                }).OrderByDescending(x => x.CreatedDate).Take(Convert.ToInt32(_appSettings.DefaultCount)).ToList();
-        //                    }
-
-        //                    if (content.ContentMediaInformations != null && content.ContentMediaInformations.Count > 0)
-        //                    {
-        //                        contentData.MediaContents = (from media in content.ContentMediaInformations
-        //                                                     where media.IsDeleted == false
-        //                                                     select new MediaDocumentResponseView
-        //                                                     {
-        //                                                         ContentMediaInformationId = media.ContentMediaInformationId,
-        //                                                         MediaTypeId = media.MediaTypeId,
-        //                                                         ImageHeight = media.ImageHeight,
-        //                                                         ImageWidth = media.ImageWidth,
-        //                                                         Sequence = media.Sequence,
-        //                                                         MediaUrl = (!string.IsNullOrEmpty(media.MediaUrl) && (media.MediaTypeId == Convert.ToInt32(MediaTypeEnum.Image) || media.MediaTypeId == Convert.ToInt32(MediaTypeEnum.InternalVideo))) ? _appSettings.StorageRootPath + media.MediaUrl : (!string.IsNullOrEmpty(media.MediaUrl) && media.MediaTypeId == Convert.ToInt32(MediaTypeEnum.ExternalVideo)) ? media.MediaUrl : null,
-        //                                                         ThumbnailUrl = !string.IsNullOrEmpty(media.ThumbnailUrl) ? _appSettings.StorageRootPath + media.ThumbnailUrl : (media.MediaTypeId == Convert.ToInt64(MediaTypeEnum.ExternalVideo) || media.MediaTypeId == Convert.ToInt32(MediaTypeEnum.InternalVideo)) ? _appSettings.StorageRootPath + _contentDefaultThumbImage : null  //!string.IsNullOrEmpty(media.ThumbnailUrl) ? _appSettings.StorageRootPath + media.ThumbnailUrl : null
-        //                                                     }).OrderBy(x => x.Sequence).ToList();
-        //                    }
-        //                    contentData.Message = "Success";
-        //                    contentData.Type = _appSettings.IsSuccessType;
-        //                    contentData.Code = Convert.ToInt32(ResponseCodeEnum.Success);
-        //                }
-        //                else
-        //                {
-        //                    contentData.Message = "Content Not Found";
-        //                    contentData.Type = _appSettings.IsErrorType;
-        //                    contentData.Code = Convert.ToInt32(ResponseCodeEnum.ContentNotFound);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                contentData.Message = "You are not authorized for this.";
-        //                contentData.Type = _appSettings.IsErrorType;
-        //                contentData.Code = Convert.ToInt32(ResponseCodeEnum.ContentNotFound);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            contentData.Message = "Content Not Found";
-        //            contentData.Type = _appSettings.IsErrorType;
-        //            contentData.Code = Convert.ToInt32(ResponseCodeEnum.ContentNotFound);
-        //        }
-        //        return contentData;
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        ///// <summary>
-        /////  Get all Contents
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<RecordsListResponseView<ContentListView>> GetAllContents(RecordContentView<ContentFilterView> contentFilterView)
-        //{
-        //    try
-        //    {
-        //        RecordsListResponseView<ContentListView> listContentView = new RecordsListResponseView<ContentListView>();
-        //        listContentView = await _contentDetailRepository.GetContentList(contentFilterView, _contentDefaultThumbImage);
-        //        listContentView.Message = "Success";
-        //        listContentView.Type = _appSettings.IsSuccessType;
-        //        listContentView.Code = Convert.ToInt32(ResponseCodeEnum.Success);
-        //        return listContentView;
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //#endregion
+        #endregion
 
     }
 }

@@ -9,5 +9,6 @@ namespace ProductManagementAPI.Infrastructure.Repository.IProductManagementRepos
     public interface IProductRepository : IRepositoryBase<Products>
     {
         Task<List<Products>> GetAllProductByGroupId(int productGroupId);
+        Task<Products> GetProductDetailById(int productId);
     }
 }

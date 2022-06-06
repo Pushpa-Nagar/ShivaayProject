@@ -8,6 +8,8 @@ namespace Common.ViewModels.AgreementModel
         [Required]
         public int AgreementId { get; set; }
         [Required]
+        public int ProductGroupId { get; set; }
+        [Required]
         public int ProductId { get; set; }
 
         [Required(ErrorMessage = "EffectiveDate is Required")]
@@ -23,5 +25,6 @@ namespace Common.ViewModels.AgreementModel
         public decimal ProductPrice { get; set; }
         [Required]
         public decimal NewPrice { get; set; }
+        public bool Active { get; set; }
     }
 }
